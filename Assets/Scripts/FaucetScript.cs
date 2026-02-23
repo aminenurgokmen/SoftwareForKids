@@ -16,7 +16,7 @@ public class FaucetScript : MonoBehaviour
                 GameManager.Instance.activeItem.transform.position = GameManager.Instance.faucetPoint.position;
                 GetComponentInChildren<Animator>().SetTrigger("Pour");
                 KettleOneScript kettle = FindFirstObjectByType<KettleOneScript>();
-                kettle.GetComponentInChildren<Animator>().SetTrigger("Kettle");
+                kettle.kettleAnimator.SetTrigger("Kettle");
                 pour = false;
                 done = true;
                 var stove = FindFirstObjectByType<StoveScript>();

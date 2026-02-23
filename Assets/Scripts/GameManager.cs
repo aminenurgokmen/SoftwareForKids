@@ -3,8 +3,10 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
    public static GameManager Instance;
-   public Transform placementPoint, faucetPoint, stovePoint;
+   public Transform placementPoint, faucetPoint, stovePoint,pourTeaPoint;
    public KettleOneScript activeItem;
+
+   
 
     void Awake()
     {

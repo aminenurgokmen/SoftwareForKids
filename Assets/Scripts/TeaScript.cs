@@ -45,8 +45,11 @@ public class TeaScript : MonoBehaviour
             transform.position = Vector3.MoveTowards(transform.position, startPosition, Time.deltaTime * 2f);
             if (Vector3.Distance(transform.position, startPosition) < 0.01f)
             {
-                transform.position = startPosition;
+                transform.position = startPosition; 
+                ButtonScript button = FindFirstObjectByType<ButtonScript>();
+                if (button != null) button.isActive2 = true;
                 moveBackToStart = false;
+               
                 // Don't reset done - task is complete once
                 // done = false;
                 // isActive = false;
