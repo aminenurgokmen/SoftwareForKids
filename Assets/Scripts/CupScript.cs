@@ -6,10 +6,8 @@ public class CupScript : MonoBehaviour
     bool moveToPlacement = false;
     bool done = false;
 
-
     void Update()
     {
-
         if (moveToPlacement)
         {
             transform.position = Vector3.MoveTowards(transform.position, GameManager.Instance.placementPoint.position, Time.deltaTime * 5f);
@@ -17,12 +15,13 @@ public class CupScript : MonoBehaviour
             {
                 transform.position = GameManager.Instance.placementPoint.position;
                 isActive = false;
+                moveToPlacement = false;
                 done = true;
-                KettleOneScript kettle = FindFirstObjectByType<KettleOneScript>();
-                kettle.isPourTea = true;
+                FindFirstObjectByType<KettleOneScript>().isPourTea = true;
             }
         }
     }
+
     void OnMouseDown()
     {
         if (done || !isActive) return;

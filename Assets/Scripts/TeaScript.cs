@@ -8,7 +8,7 @@ public class TeaScript : MonoBehaviour
     bool moveBackToStart = false;
     Vector3 startPosition;
     float animationTimer = 0f;
-    float animationDuration = 4f; // Adjust this based on your animation length
+    float animationDuration = 4f;
 
     void Start()
     {
@@ -24,45 +24,40 @@ public class TeaScript : MonoBehaviour
             {
                 transform.position = GameManager.Instance.placementPoint.position;
                 moveToPlacement = false;
-                // Play tea animation after reaching placement
                 GetComponentInChildren<Animator>().SetTrigger("TeaReady");
                 KettleOneScript kettle = FindFirstObjectByType<KettleOneScript>();
-                if (kettle != null) kettle.GetComponentInChildren<Animator>().SetTrigger("Kettle");
+                if (kettle != null && kettle.kettleAnimator != null)
+                {
+                    kettle.kettleAnimator.enabled = true;
+                    kettle.kettleAnimator.SetTrigger("Kettle");
+                }
                 animationTimer = 0f;
             }
         }
         else if (done && !moveBackToStart)
         {
-            // Wait for animation to complete
             animationTimer += Time.deltaTime;
             if (animationTimer >= animationDuration)
-            {
                 moveBackToStart = true;
-            }
         }
         else if (moveBackToStart)
         {
             transform.position = Vector3.MoveTowards(transform.position, startPosition, Time.deltaTime * 2f);
             if (Vector3.Distance(transform.position, startPosition) < 0.01f)
             {
-                transform.position = startPosition; 
-                ButtonScript button = FindFirstObjectByType<ButtonScript>();
-                if (button != null) button.isActive2 = true;
+                transform.position = startPosition;
                 moveBackToStart = false;
-               
-                // Don't reset done - task is complete once
-                // done = false;
-                // isActive = false;
+                var button = FindFirstObjectByType<ButtonScript>();
+                if (button != null) button.isActive2 = true;
             }
         }
     }
+
     void OnMouseDown()
     {
         if (!isActive || done) return;
         Debug.Log("Tea Clicked");
         done = true;
-        // Move the tea to placement point
         moveToPlacement = true;
     }
 }
-
