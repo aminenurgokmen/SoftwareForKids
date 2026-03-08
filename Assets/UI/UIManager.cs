@@ -1,22 +1,15 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class UIManager : MonoBehaviour
 {
-    public void ChoseMathLesson()
-    {
-        Debug.Log("Matematik dersi seçildi. ");
-    }
-    public void ChoseAlgorithmLesson()
-    {
-        Debug.Log("Algoritma dersi seçildi. ");
-    }
 
-    public void ChoseClassOne()
+    public void ChoseClassTwoAlgorithmGame1()
     {
-        Debug.Log("Sınıf 1 seçildi. ");
+       SceneManager.LoadScene("AlgorithmGame1");
     }
-    public void ChoseClassTwo()
+    public void ChoseClassTwoAlgorithmGame2()
     {
-        Debug.Log("Sınıf 2 seçildi. ");
+        SceneManager.LoadScene("AlgorithmGame2");
     }
 }

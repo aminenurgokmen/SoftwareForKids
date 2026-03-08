@@ -11,8 +11,11 @@ public class RabbitGameScript : MonoBehaviour
     public AudioClip correctSound;
     public GameObject rabbit;
     public GameObject light;
-    int correctCount = 0;   
+    int correctCount = 0;
     public TextMeshPro scoreText;
+    public TextMeshProUGUI scoreText2;
+    public GameObject startPanel, gameOverPanel;
+    bool isGameOver = false;
 
     private string[] questions = {
         "Eğer bir sayı çiftse 2’ye bölünür.",
@@ -29,7 +32,7 @@ public class RabbitGameScript : MonoBehaviour
 
         "Eğer su 0°C’nin altındaysa donar.",
 
-        "Eğer bir sayı 3’e bölünüyorsa 2’ye de bölünür.",
+        "Eğer bir sayı 3'ten büyükse 5'den büyüktür.",
 
         "Eğer elektrik kesildiyse ışıklar yanmaz.",
 
@@ -66,27 +69,42 @@ public class RabbitGameScript : MonoBehaviour
 
     public void Answer(bool isTrue)
     {
-        if (isTrue == currentAnswer)
+        if (isGameOver)
         {
-            Debug.Log("Doğru!");
-            AudioSource.PlayClipAtPoint(correctSound, transform.position, .2f);
-            rabbit.GetComponentInChildren<Animator>().SetTrigger("Correct");
-            light.GetComponent<Animator>().SetTrigger("Green");   // Doğru cevaba yeşil ışık
-            correctCount++;
-            scoreText.text = correctCount.ToString();  // Skoru güncelle
+            gameOverPanel.SetActive(true);
+            return;
         }
+        if (startPanel.activeSelf)
+            return;
         else
         {
-            Debug.Log("Yanlış!");
-            AudioSource.PlayClipAtPoint(wrongSound, transform.position, .2f);
-            rabbit.GetComponentInChildren<Animator>().SetTrigger("Wrong");
-            light.GetComponent<Animator>().SetTrigger("Red");     // Yanlış cevaba kırmızı ışık
-        }
+            if (isTrue == currentAnswer)
+            {
+                Debug.Log("Doğru!");
+                AudioSource.PlayClipAtPoint(correctSound, transform.position, .2f);
+                rabbit.GetComponentInChildren<Animator>().SetTrigger("Correct");
+                light.GetComponent<Animator>().SetTrigger("Green");   // Doğru cevaba yeşil ışık
+                correctCount++;
+                scoreText.text = correctCount.ToString();  // Skoru güncelle
+                scoreText2.text = "Toplanan Puan:" + correctCount.ToString();  // Skoru güncelle
+            }
+            else
+            {
+                Debug.Log("Yanlış!");
+                AudioSource.PlayClipAtPoint(wrongSound, transform.position, .2f);
+                rabbit.GetComponentInChildren<Animator>().SetTrigger("Wrong");
+                light.GetComponent<Animator>().SetTrigger("Red");     // Yanlış cevaba kırmızı ışık
+            }
 
-        questionIndex++;
-        if (questionIndex < questions.Length)
-            LoadQuestion();
-        else
-            questionText.text = "Oyun bitti!";
+            questionIndex++;
+            if (questionIndex < questions.Length)
+                LoadQuestion();
+            else
+            {
+                questionText.text = "Oyun bitti!";
+                isGameOver = true;
+                return;
+            }
+        }
     }
 }
